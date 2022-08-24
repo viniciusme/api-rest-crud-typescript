@@ -2,10 +2,10 @@ import "reflect-metadata";
 import { AppDataSource } from "../src/infra/data/data-source";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-//import * as helmet from "helmet";
-//import * as cors from "cors";
+import helmet from "helmet";
+import * as cors from "cors";
 import routes from "../src/presentation/routes/routes";
-import { User } from "./core/entity/User";
+import { users } from "./core/entity/User";
 
 //Connects to the Database -> then starts the express
 AppDataSource.initialize()
@@ -16,8 +16,8 @@ AppDataSource.initialize()
     const app = express();
 
     // Call midlewares
-    //app.use(cors());
-    //app.use(helmet());
+    app.use(cors());
+    app.use(helmet());
     app.use(bodyParser.json());
 
     //Set all routes from routes folder
@@ -28,18 +28,18 @@ AppDataSource.initialize()
 
     // insert new users for test
     await AppDataSource.manager.save(
-      AppDataSource.manager.create(User, {
-        firstName: "Timber",
-        lastName: "Saw",
-        age: 27,
+      AppDataSource.manager.create(users, {
+        first_name: "Vinicius",
+        last_name: "Mendes",
+        role: "admin",
       })
     );
 
     await AppDataSource.manager.save(
-      AppDataSource.manager.create(User, {
-        firstName: "Phantom",
-        lastName: "Assassin",
-        age: 24,
+      AppDataSource.manager.create(users, {
+        first_name: "Phantom",
+        last_name: "Assassin",
+        role: "user",
       })
     );
 

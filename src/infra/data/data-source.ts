@@ -1,17 +1,17 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "../../core/entity/User";
+import { users } from "../../core/entity/User";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
   host: "localhost",
   port: 3306,
   username: "root",
-  password: "Work@w3b2022",
+  password: "P3nt3st@w3b",
   database: "api-rest-crud",
   synchronize: true,
   logging: false,
-  entities: [User],
+  entities: [users],
   migrations: [],
   subscribers: [],
 });
