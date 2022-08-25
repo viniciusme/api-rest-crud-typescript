@@ -2,8 +2,8 @@ import "reflect-metadata";
 import { AppDataSource } from "../src/infra/data/data-source";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import helmet from "helmet";
-import * as cors from "cors";
+//import helmet from "helmet";
+//import * as cors from "cors";
 import routes from "../src/presentation/routes/routes";
 import { users } from "./core/entity/User";
 
@@ -16,8 +16,8 @@ AppDataSource.initialize()
     const app = express();
 
     // Call midlewares
-    app.use(cors());
-    app.use(helmet());
+    //app.use(cors());
+    //app.use(helmet());
     app.use(bodyParser.json());
 
     //Set all routes from routes folder
