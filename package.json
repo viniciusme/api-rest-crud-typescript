@@ -4,6 +4,12 @@
   "description": "Awesome project developed with TypeORM.",
   "type": "commonjs",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/body-parser": "^1.19.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/helmet": "^4.0.0",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^16.11.10",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "eslint": "^8.22.0",
@@ -17,7 +23,7 @@
   },
   "dependencies": {
     "babel-eslint": "^10.1.0",
-    "body-parser": "^1.19.1",
+    "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "eslint-config-prettier": "^8.5.0",
