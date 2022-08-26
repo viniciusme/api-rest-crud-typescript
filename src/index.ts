@@ -7,26 +7,26 @@ import * as bodyParser from "body-parser";
 import routes from "../src/presentation/routes/routes";
 import { users } from "./core/entity/User";
 
-//Connects to the Database -> then starts the express
+//Conecta-se ao banco de dados -> então inicia o expresso
 AppDataSource.initialize()
   .then(async (connection) => {
     const port = process.env.PORT || 3000;
 
-    // Create a new express application instance
+    // Cria uma nova instância do aplicativo expresso
     const app = express();
 
-    // Call midlewares
+    //Chama midlewares
     //app.use(cors());
     //app.use(helmet());
     app.use(bodyParser.json());
 
-    //Set all routes from routes folder
+    //Definir todas as rotas da pasta de rotas
     app.use("/", routes);
 
-    // start express server
+    // Inicia servidor express
     app.listen(port);
 
-    // insert new users for test
+    // insere novos usuários para teste
     await AppDataSource.manager.save(
       AppDataSource.manager.create(users, {
         first_name: "Vinicius",

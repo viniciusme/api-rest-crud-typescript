@@ -1,13 +1,13 @@
 import { Router } from "express";
-
+import { checkJwt } from "../../middlewares/checkJwt";
 const router = Router();
 
-//Login route
+//Rota de login
 router.post("/login", (req, res) => {
   res.send({ msg: "Rota login funcionando!" });
 });
 
-//Change my password
+//Rota para mudar senha do usuário
 router.post("/change-password", (req, res) => {
   res.send({ msg: "Rota change-password funcionando!" });
 });

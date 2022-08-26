@@ -2,27 +2,27 @@ import { Router } from "express";
 
 const router = Router();
 
-//Get all users
+//Pega todos os usuários
 router.get("/", (req, res) => {
   res.send({ msg: "Rota filtrar todos usuários funcionando!" });
 });
 
-// Get one user
+// Pega um único usuário pelo Id
 router.get("/:id", (req, res) => {
   res.send({ msg: "Rota filtrar usuários por id funcionando!" });
 });
 
-//Create a new user
+//Cria um novo usuário
 router.post("/", (req, res) => {
   res.send({ msg: "Rota criar usuários funcionando!" });
 });
 
-//Edit one user
+//Edito um único usuário pelo Id
 router.patch("/:id", (req, res) => {
   res.send({ msg: "Rota editar usuários funcionando!" });
 });
 
-//Delete one user
+//Deleta um único usuário pelo Id
 router.delete("/:id", (req, res) => {
   res.send({ msg: "Rota deletar usuários funcionando!" });
 });
