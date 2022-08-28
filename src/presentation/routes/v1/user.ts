@@ -1,30 +1,23 @@
 import { Router } from "express";
+import UserController from "./../../controllers/UserController";
+import { checkJwt } from "../../middlewares/checkJwt";
+import { checkRoles } from "../../middlewares/checkRoles";
 
 const router = Router();
 
 //Pega todos os usuários
-router.get("/", (req, res) => {
-  res.send({ msg: "Rota filtrar todos usuários funcionando!" });
-});
+router.get("/", UserController.listAll);
 
 // Pega um único usuário pelo Id
-router.get("/:id", (req, res) => {
-  res.send({ msg: "Rota filtrar usuários por id funcionando!" });
-});
+router.get("/:id", UserController.getOneById);
 
 //Cria um novo usuário
-router.post("/", (req, res) => {
-  res.send({ msg: "Rota criar usuários funcionando!" });
-});
+router.post("/", UserController.newUser);
 
 //Edito um único usuário pelo Id
-router.patch("/:id", (req, res) => {
-  res.send({ msg: "Rota editar usuários funcionando!" });
-});
+router.patch("/:id", UserController.editUser);
 
-//Deleta um único usuário pelo Id
-router.delete("/:id", (req, res) => {
-  res.send({ msg: "Rota deletar usuários funcionando!" });
-});
+// //Deleta um único usuário pelo Id
+router.delete("/:id", UserController.deleteUser);
 
 export default router;

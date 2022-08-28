@@ -2,8 +2,9 @@ import "reflect-metadata";
 import { AppDataSource } from "../src/infra/data/data-source";
 import * as express from "express";
 import * as bodyParser from "body-parser";
-//import helmet from "helmet";
-//import * as cors from "cors";
+import helmet from "helmet";
+import * as cors from "cors";
+
 import routes from "../src/presentation/routes/routes";
 import { users } from "./core/entity/User";
 
@@ -16,8 +17,8 @@ AppDataSource.initialize()
     const app = express();
 
     //Chama midlewares
-    //app.use(cors());
-    //app.use(helmet());
+    app.use(cors());
+    app.use(helmet());
     app.use(bodyParser.json());
 
     //Definir todas as rotas da pasta de rotas
@@ -27,24 +28,24 @@ AppDataSource.initialize()
     app.listen(port);
 
     // insere novos usuários para teste
-    await AppDataSource.manager.save(
-      AppDataSource.manager.create(users, {
-        first_name: "Vinicius",
-        last_name: "Mendes",
-        role: "admin",
-      })
-    );
+    // await AppDataSource.manager.save(
+    //   AppDataSource.manager.create(users, {
+    //     username: "vinimendes",
+    //     password: "12345678",
+    //     role: "admin",
+    //   })
+    // );
 
-    await AppDataSource.manager.save(
-      AppDataSource.manager.create(users, {
-        first_name: "Phantom",
-        last_name: "Assassin",
-        role: "user",
-      })
-    );
+    // await AppDataSource.manager.save(
+    //   AppDataSource.manager.create(users, {
+    //     username: "userteste",
+    //     password: "12345678",
+    //     role: "user",
+    //   })
+    // );
 
     console.log(
-      `The Express Server ${process.env.PROJECT_NAME} was started on port 3000. Open http://localhost:${port} to see the results`
+      `O servidor da API ${process.env.PROJECT_NAME} foi iniciado na porta 3000. Abra http://localhost:${port} para ver os resultados`
     );
   })
   .catch((error) => console.log(error));
