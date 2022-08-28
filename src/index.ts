@@ -27,7 +27,7 @@ AppDataSource.initialize()
     // Inicia servidor express
     app.listen(port);
 
-    // insere novos usuários para teste
+    // insere novo usuário para teste com role Admin
     // await AppDataSource.manager.save(
     //   AppDataSource.manager.create(users, {
     //     username: "vinimendes",
@@ -36,6 +36,7 @@ AppDataSource.initialize()
     //   })
     // );
 
+    // insere novo usuário para teste com role User
     // await AppDataSource.manager.save(
     //   AppDataSource.manager.create(users, {
     //     username: "userteste",

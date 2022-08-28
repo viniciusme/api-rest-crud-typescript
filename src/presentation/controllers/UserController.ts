@@ -28,7 +28,7 @@ class UserController {
     const userRepository = AppDataSource.getRepository(users);
 
     try {
-      const user = await userRepository.findOne({
+      const user = await userRepository.findOneOrFail({
         where: { id: Number(id) },
         select: ["id", "username", "role", "createdAt", "updatedAt"], //Não queremos enviar as senhas na resposta
       });
@@ -58,7 +58,7 @@ class UserController {
     const errors = await validate(user);
 
     if (errors.length > 0) {
-      res.status(400).send(errors);
+      res.status(400).send({ errors });
 
       return;
     }
@@ -93,7 +93,7 @@ class UserController {
     let user;
 
     try {
-      user = await userRepository.findOne({
+      user = await userRepository.findOneOrFail({
         where: { id: Number(id) },
       });
     } catch (error) {
@@ -136,8 +136,12 @@ class UserController {
     let user: users;
 
     try {
-      user = await userRepository.findOne({
+      user = await userRepository.findOneOrFail({
         where: { id: Number(id) },
+      });
+
+      res.status(200).send({
+        message: "Usuário deletado",
       });
     } catch (error) {
       res.status(404).send("Usuário não encontrado");

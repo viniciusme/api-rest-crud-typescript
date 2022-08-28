@@ -10,13 +10,12 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 
   //Tente validar o token e obter dados
   try {
-    jwtPayload = jwt.verify(token, config.jwtSecret);
+    jwtPayload = <any>jwt.verify(token, config.jwtSecret);
     res.locals.jwtPayload = jwtPayload;
   } catch (error) {
     // Se o token não for válido, responda com 401 (não autorizado)
-    res.status(401).send({
-      message: "Token inválido!",
-    });
+    res.status(401).send();
+    return;
   }
 
   //O token é válido por 1 hora

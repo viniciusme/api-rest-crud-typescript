@@ -1,6 +1,6 @@
 import { Request, response, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import { getRepository } from "typeorm";
+import { AppDataSource } from "../../infra/data/data-source";
 import { validate } from "class-validator";
 
 import { users } from "../../core/entity/User";
@@ -10,17 +10,18 @@ class AuthController {
   static login = async (req: Request, res: Response) => {
     //Verifica se usuário e senha estão configurados
     let { username, password } = req.body;
+    console.log(username, password);
 
     if (!(username && password)) {
-      response.status(400).send();
+      res.status(400).send();
     }
 
     //Pega usuário do banco de dados
-    const userRepository = getRepository(users);
+    const userRepository = AppDataSource.getRepository(users);
     let user: users;
 
     try {
-      user = await userRepository.findOneByOrFail({ username });
+      user = await userRepository.findOneOrFail({ where: { username } });
     } catch (error) {
       res.status(401).send();
     }
@@ -43,48 +44,50 @@ class AuthController {
     res.send(token);
   };
 
-  static chengePassword = async (req: Request, res: Response) => {
+  static changePassword = async (req: Request, res: Response) => {
     //Pega ID do JWT
     const id = res.locals.jwtPayload.userId;
+    // const id = req.body;
+    console.log(id);
 
-    //Pega os parâmetros do body
-    const { oldPassword, newPassword } = req.body;
-    if (!(oldPassword && newPassword)) {
-      res.status(400).send();
-    }
+    // //Pega os parâmetros do corpo
+    // const { oldPassword, newPassword } = req.body;
 
-    //Pega usuário do banco de dados
-    const userRepository = getRepository(users);
-    let user: users;
+    // if (!(oldPassword && newPassword)) {
+    //   res.status(400).send();
+    // }
 
-    try {
-      user = await userRepository.findOneByOrFail(id);
-    } catch (id) {
-      res.status(401).send();
-    }
+    // //Pega usuário do banco de dados
+    // const userRepository = AppDataSource.getRepository(users);
+    // let user: users;
 
-    //Verifica se a senha antiga corresponde
-    if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
-      res.status(401).send();
+    // try {
+    //   user = await userRepository.findOneOrFail(id);
+    // } catch (id) {
+    //   res.status(401).send();
+    // }
 
-      return;
-    }
+    // //Verifica se a senha antiga corresponde
+    // if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
+    //   res.status(401).send();
 
-    //Valida os modelos (comprimento da senha)
-    user.password = newPassword;
-    const errors = await validate(user);
+    //   return;
+    // }
 
-    if (errors.length > 0) {
-      res.status(400).send();
+    // //Valida o modelo (comprimento da senha)
+    // user.password = newPassword;
 
-      return;
-    }
+    // const errors = await validate(user);
+    // if (errors.length > 0) {
+    //   res.status(400).send(errors);
+    //   return;
+    // }
 
-    //Hash nova senha e salva
-    user.hashPassword();
-    userRepository.save(user);
+    // //Hash a nova senha e salva
+    // user.hashPassword();
+    // userRepository.save(user);
 
-    res.status(204).send();
+    // res.status(204).send();
   };
 }
 
