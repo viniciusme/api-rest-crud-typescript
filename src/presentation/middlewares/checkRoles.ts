@@ -6,9 +6,11 @@ export const checkRole = (roles: Array<string>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     //Pega o ID do usuário do middleware anterior
     const id = res.locals.jwtPayload.userId;
+    console.log(id);
 
     //Pega a função do usuário do banco de dados
     const userRepository = AppDataSource.getRepository(users);
+
     let user: users;
     try {
       user = await userRepository.findOneOrFail(id);
