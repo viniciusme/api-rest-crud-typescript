@@ -14,6 +14,8 @@ const DB_PORT = Number(process.env.TYPEORM_PORT);
 const DB_USERNAME = process.env.TYPEORM_USERNAME;
 const DB_PASSWORD = process.env.TYPEORM_PASSWORD;
 
+console.log(DB_TYPE);
+
 export const AppDataSource = new DataSource({
   type: DB_TYPE,
   host: DB_HOST,

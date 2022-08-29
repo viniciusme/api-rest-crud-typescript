@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { getRepository } from "typeorm";
-
+import { AppDataSource } from "../../infra/data/data-source";
 import { users } from "../../core/entity/User";
 
 export const checkRoles = (roles: Array<string>) => {
@@ -9,7 +8,7 @@ export const checkRoles = (roles: Array<string>) => {
     const id = res.locals.jwtPayload.userId;
 
     //Pega a role do usuário do banco de dados
-    const userRepository = getRepository(users);
+    const userRepository = AppDataSource.getRepository(users);
     let user: users;
 
     try {
