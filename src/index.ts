@@ -27,23 +27,29 @@ AppDataSource.initialize()
     // Inicia servidor express
     app.listen(port);
 
-    // insere novo usuário para teste com role Admin
-    // await AppDataSource.manager.save(
-    //   AppDataSource.manager.create(users, {
-    //     username: "vinimendes",
-    //     password: "12345678",
-    //     role: "admin",
-    //   })
-    // );
+    // Insere novo usuário para teste com role Admin
+    await AppDataSource.manager.save(
+      AppDataSource.manager.create(users, {
+        first_name: "Vinicius",
+        last_name: "Mendes",
+        email: "vini@vinimendes.com.br",
+        username: "vinimendes",
+        password: "12345678",
+        role: "admin",
+      })
+    );
 
-    // // insere novo usuário para teste com role User
-    // await AppDataSource.manager.save(
-    //   AppDataSource.manager.create(users, {
-    //     username: "suporte",
-    //     password: "12345678",
-    //     role: "user",
-    //   })
-    // );
+    // Insere novo usuário para teste com role User
+    await AppDataSource.manager.save(
+      AppDataSource.manager.create(users, {
+        first_name: "Pedro",
+        last_name: "Henrique Ferreira",
+        email: "suporte@multi.com.br",
+        username: "pedrohf",
+        password: "12345678",
+        role: "user",
+      })
+    );
 
     console.log(
       `O servidor da API ${process.env.PROJECT_NAME} foi iniciado na porta 3000. Abra http://localhost:${port} para ver os resultados`

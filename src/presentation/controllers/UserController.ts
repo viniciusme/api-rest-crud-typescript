@@ -10,7 +10,16 @@ class UserController {
     const userRepository = AppDataSource.getRepository(users);
 
     const usersList = await userRepository.find({
-      select: ["id", "username", "role", "createdAt", "updatedAt"], //Não queremos enviar as senhas na resposta
+      select: [
+        "id",
+        "first_name",
+        "last_name",
+        "username",
+        "email",
+        "role",
+        "createdAt",
+        "updatedAt",
+      ], //Não queremos enviar as senhas na resposta
     });
 
     //Envia o objeto de usuários
@@ -28,7 +37,16 @@ class UserController {
     try {
       const user = await userRepository.findOneOrFail({
         where: { id: Number(id) },
-        select: ["id", "username", "role", "createdAt", "updatedAt"], //Não queremos enviar a senha na resposta
+        select: [
+          "id",
+          "first_name",
+          "last_name",
+          "username",
+          "email",
+          "role",
+          "createdAt",
+          "updatedAt",
+        ], //Não queremos enviar as senhas na resposta
       });
 
       //Envia o objeto de usuários
@@ -40,22 +58,25 @@ class UserController {
 
   static newUser = async (req: Request, res: Response) => {
     //Pega os parâmetros do corpo
-    let { username, password, role } = req.body;
+    let { first_name, last_name, username, email, password, role } = req.body;
     let user = new users();
 
+    // console.log(req.body);
+
+    user.first_name = first_name;
+    user.last_name = last_name;
     user.username = username;
+    user.email = email;
     user.password = password;
     user.role = role;
 
+    // console.log(user.password, user.role);
+
     //Valida se os parâmetros estão ok
     const errors = await validate(user);
-    console.log(errors);
 
     if (errors.length > 0) {
-      res.status(400).send({
-        errors,
-      });
-      return;
+      return res.status(400).json(errors.map((e) => e.constraints));
     }
 
     //Hash a senha, para armazenar com segurança no banco de dados
@@ -63,6 +84,8 @@ class UserController {
 
     //Tente salvar. Se falhar, o nome de usuário já está em uso
     const userRepository = AppDataSource.getRepository(users);
+
+    console.log(userRepository);
 
     try {
       await userRepository.save(user);
@@ -105,9 +128,7 @@ class UserController {
     const errors = await validate(user);
 
     if (errors.length > 0) {
-      res.status(400).send({
-        msg: errors,
-      });
+      res.status(400).json(errors.map((e) => e.constraints));
       return;
     }
 
