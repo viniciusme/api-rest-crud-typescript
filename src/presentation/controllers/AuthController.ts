@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { AppDataSource } from "../../infra/data/data-source";
 import { validate } from "class-validator";
@@ -29,7 +29,6 @@ class AuthController {
     //Verifica se a senha criptografada corresponde
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       res.status(401).send();
-
       return;
     }
 
@@ -47,47 +46,44 @@ class AuthController {
   static changePassword = async (req: Request, res: Response) => {
     //Pega ID do JWT
     const id = res.locals.jwtPayload.userId;
-    // const id = req.body;
     console.log(id);
+    //Pega os parâmetros do corpo
+    const { oldPassword, newPassword } = req.body;
 
-    // //Pega os parâmetros do corpo
-    // const { oldPassword, newPassword } = req.body;
+    if (!(oldPassword && newPassword)) {
+      res.status(400).send();
+    }
 
-    // if (!(oldPassword && newPassword)) {
-    //   res.status(400).send();
-    // }
+    //Pega usuário do banco de dados
+    const userRepository = AppDataSource.getRepository(users);
+    let user: users;
 
-    // //Pega usuário do banco de dados
-    // const userRepository = AppDataSource.getRepository(users);
-    // let user: users;
+    try {
+      user = await userRepository.findOneOrFail(id);
+    } catch (id) {
+      res.status(401).send();
+    }
 
-    // try {
-    //   user = await userRepository.findOneOrFail(id);
-    // } catch (id) {
-    //   res.status(401).send();
-    // }
+    //Verifica se a senha antiga corresponde
+    if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
+      res.status(401).send();
+      return;
+    }
 
-    // //Verifica se a senha antiga corresponde
-    // if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
-    //   res.status(401).send();
+    //Valida o modelo (comprimento da senha)
+    user.password = newPassword;
+    const errors = await validate(user);
 
-    //   return;
-    // }
+    if (errors.length > 0) {
+      res.status(400).send(errors);
+      return;
+    }
 
-    // //Valida o modelo (comprimento da senha)
-    // user.password = newPassword;
+    //Hash a nova senha e salva
+    user.hashPassword();
+    userRepository.save(user);
 
-    // const errors = await validate(user);
-    // if (errors.length > 0) {
-    //   res.status(400).send(errors);
-    //   return;
-    // }
-
-    // //Hash a nova senha e salva
-    // user.hashPassword();
-    // userRepository.save(user);
-
-    // res.status(204).send();
+    res.status(204).send();
   };
 }
 

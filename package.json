@@ -40,8 +40,9 @@
   },
   "scripts": {
     "dev": "ts-node-dev -r dotenv/config ./src/index.ts",
-    "start": "ts-node -r dotenv/config ./dist/index.js",
-    "build": "tsc",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "tsc": "tsc",
+    "start": "set debug=* && ts-node-dev -r dotenv/config --respawn --transpileOnly ./src/index.ts",
+    "prod": "tsc && node ./dist/index.js",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
   }
 }

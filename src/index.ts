@@ -28,22 +28,22 @@ AppDataSource.initialize()
     app.listen(port);
 
     // insere novo usuário para teste com role Admin
-    await AppDataSource.manager.save(
-      AppDataSource.manager.create(users, {
-        username: "vinimendes",
-        password: "12345678",
-        role: "admin",
-      })
-    );
+    // await AppDataSource.manager.save(
+    //   AppDataSource.manager.create(users, {
+    //     username: "vinimendes",
+    //     password: "12345678",
+    //     role: "admin",
+    //   })
+    // );
 
-    // insere novo usuário para teste com role User
-    await AppDataSource.manager.save(
-      AppDataSource.manager.create(users, {
-        username: "suporte",
-        password: "12345678",
-        role: "user",
-      })
-    );
+    // // insere novo usuário para teste com role User
+    // await AppDataSource.manager.save(
+    //   AppDataSource.manager.create(users, {
+    //     username: "suporte",
+    //     password: "12345678",
+    //     role: "user",
+    //   })
+    // );
 
     console.log(
       `O servidor da API ${process.env.PROJECT_NAME} foi iniciado na porta 3000. Abra http://localhost:${port} para ver os resultados`
